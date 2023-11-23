@@ -1,0 +1,17 @@
+FROM bioconductor/bioconductor_docker:devel
+
+USER rstudio
+
+WORKDIR /home/rstudio
+
+RUN git clone --branch vjc_idx_fix_gpu https://github.com/vjcitn/PyTorch-BigGraph
+
+WORKDIR PyTorch-BigGraph
+
+
+RUN pip install torch
+RUN PBG_INSTALL_CPP=1 pip install .
+
+# to use in jetstream with GPU 
+# docker run --gpus all --ipc=host -ti vjcitn/pbg_gpu:0.0.0 bash
+
