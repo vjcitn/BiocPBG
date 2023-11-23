@@ -10,16 +10,23 @@ path_to_15k_tgz = function (cache = BiocFileCache::BiocFileCache())
         rname = "fb15k.tgz", action = "copy", rtype = "web"))
 }
 
-#' set up folder with fb15k test data
+#' set up folder with fb15k demo data
 #' @param exdir character(1) path to destination
-#' @return vector of full paths to test data
+#' @return vector of full paths to demo data
+#' @note vector returned is named with 'train', 'test', 'valid' for downstream ordering
 #' @examples
 #' tfold = fb15k_folder()
 #" tfold
 #' @export
 fb15k_folder = function(exdir = tempdir()) {
   untar( path_to_15k_tgz(), exdir = exdir )
-  dir(exdir, patt="freebase", full.names=TRUE, recursive=TRUE)
+  ans = dir(exdir, patt="freebase", full.names=TRUE, recursive=TRUE)
+  trind = grep("train", ans)
+  teind = grep("test", ans)
+  vaind = grep("valid", ans)
+  ans = ans[c(trind, teind, vaind)]
+  names(ans) = c("train", "test", "valid")
+  ans
 }
 
   

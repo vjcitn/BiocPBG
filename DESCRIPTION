@@ -12,7 +12,7 @@ Authors@R:
 Description: interface to torchbiggraph
 License: Artistic-2.0
 Encoding: UTF-8
-Depends: R (>= 4.1), reticulate
+Depends: R (>= 4.1), reticulate, rhdf5
 Suggests: knitr, testthat, BiocStyle
 Imports: BiocFileCache
 VignetteBuilder: knitr

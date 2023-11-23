@@ -1,37 +1,3 @@
-        
-# this program sets up test, train and validate triple folders
-# from fb15k_folder(), then set up configuration so that
-# convert_input_data will succeed in producing hdf5 'input' for embedding
-
-library(BiocPBG)
-library(reticulate)
-palib = reticulate::import("pathlib")
-pbg = try(reticulate::import("torchbiggraph"))
-
-fb_txt_paths = fb15k_folder() # .txt files
-fb_part_paths = gsub(".txt", "_partitioned", fb_txt_paths)
-
-edge_paths = vector("list", length(fb_part_paths))
-for (i in seq_len(length(fb_part_paths))) edge_paths[[i]] = fb_part_paths[i]
-
-root_folder = dirname(fb_txt_paths[1])
-
-txtpl = reticulate::r_to_py(lapply(fb_txt_paths, function(x) palib$Path(x)))
-
-rs = pbg$config$RelationSchema(name='all_edges', 
-                lhs='all', rhs='all', weight=1.0, 
-                operator='complex_diagonal', all_negs=FALSE)
-
-ent = pbg$config$EntitySchema(num_partitions=1L)
-#pbg$converters$importers$convert_input_data(
-#       reticulate::dict(all=ent),
-#       list(rs),
-#       root_folder,
-#       edge_paths,
-#       txtpl,  # input
-#       pbg$converters$importers$TSVEdgelistReader(lhs_col=0L, rhs_col=2L, rel_col=1L),
-#       dynamic_relations = TRUE)
-
 #' produce RelationSchema for torchbiggraph configuration
 #' @param name character(1)
 #' @param lhs character(1)
@@ -59,6 +25,13 @@ make_rel_schema = function(name='all_edges', lhs='all', rhs='all', weight=1.0,
 #' @param all_negs character(1), passed to make_rel_schema
 #' @param pbgref python reference to torchbiggraph module
 #' @param pathlibref python reference to pathlib module
+#' @examples
+#' tfis = fb15k_folder()
+#' pbg = reticulate::import("torchbiggraph")
+#' palib = reticulate::import("pathlib")
+#' nn = triples_to_hdf5(tfis, pbgref = pbg, pathlibref=palib)
+#' nn
+#' rhdf5::h5ls(dir(nn$edge_paths[[1]], full=TRUE))
 #' @export
 triples_to_hdf5 = function(triple_paths, num_partitions=1L, 
   relname = 'all_edges', lhs='all', rhs='all', weight=1.0,
@@ -72,7 +45,7 @@ triples_to_hdf5 = function(triple_paths, num_partitions=1L,
   triple_paths = unname(triple_paths)
   root_folder = dirname(triple_paths[1])
   part_paths = gsub(".txt", "_partitioned", triple_paths)
-  edge_paths = vector("list", length(fb_part_paths))
+  edge_paths = vector("list", length(part_paths))
   for (i in seq_len(length(part_paths))) edge_paths[[i]] = part_paths[i]
   txtpl = reticulate::r_to_py(lapply(triple_paths, function(x) palib$Path(x)))
   triple_reader = pbgref$converters$importers$TSVEdgelistReader(lhs_col=0L, rhs_col=2L, rel_col=1L)

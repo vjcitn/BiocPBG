@@ -34,8 +34,19 @@ make_pbg_config(
 produce configuration torchbiggraph fun, with defaults for FB15k test
 }
 \examples{
+fbpaths = fb15k_folder() # .txt files
+ppaths = gsub(".txt", "_partitioned", fbpaths)
+fbpl = lapply(fbpaths, force)
+pppl = lapply(ppaths, force) # vec2list
 pbg = try(reticulate::import("torchbiggraph"))
 if (!inherits(pbg, "try-error")) {
-  confdict = make_pbg_config()
+  confdict = make_pbg_config(entity_path = dirname(fbpl[[1]]),
+                               edge_paths=fbpl)
+  pbg$converters$importers$convert_input_data( pbg$config$EntitySchema(num_partitions=1L),
+      confdict$relations,
+      confdict$entity_path, confdict$edge_paths,
+      pppl, # input edge paths
+      pbg$converters$importers$TSVEdgeListReader(lhs_col=0L, rhs_col=2L, rel_col=1L),
+      dynamic_relations = confdict$dynamic_relations)
 }
 }

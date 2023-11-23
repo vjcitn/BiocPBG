@@ -2,7 +2,7 @@
 % Please edit documentation in R/cache_fb15k.R
 \name{fb15k_folder}
 \alias{fb15k_folder}
-\title{set up folder with fb15k test data}
+\title{set up folder with fb15k demo data}
 \usage{
 fb15k_folder(exdir = tempdir())
 }
@@ -10,10 +10,13 @@ fb15k_folder(exdir = tempdir())
 \item{exdir}{character(1) path to destination}
 }
 \value{
-vector of full paths to test data
+vector of full paths to demo data
 }
 \description{
-set up folder with fb15k test data
+set up folder with fb15k demo data
+}
+\note{
+vector returned is named with 'train', 'test', 'valid' for downstream ordering
 }
 \examples{
 tfold = fb15k_folder()

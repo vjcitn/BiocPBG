@@ -2,5 +2,7 @@
 
 export(fb15k_folder)
 export(make_pbg_config)
+export(make_rel_schema)
 export(path_to_15k_tgz)
+export(triples_to_hdf5)
 import(BiocFileCache)
