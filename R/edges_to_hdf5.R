@@ -49,6 +49,10 @@ triples_to_hdf5 = function(triple_paths, num_partitions=1L,
   for (i in seq_len(length(part_paths))) edge_paths[[i]] = part_paths[i]
   txtpl = reticulate::r_to_py(lapply(triple_paths, function(x) palib$Path(x)))
   triple_reader = pbgref$converters$importers$TSVEdgelistReader(lhs_col=0L, rhs_col=2L, rel_col=1L)
+#
+# it appears that convert_input_data uses positional 
+# argument management
+#
   pbgref$converters$importers$convert_input_data(
        reticulate::dict(all=ent),
        list(rs),

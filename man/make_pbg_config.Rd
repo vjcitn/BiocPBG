@@ -39,14 +39,16 @@ ppaths = gsub(".txt", "_partitioned", fbpaths)
 fbpl = lapply(fbpaths, force)
 pppl = lapply(ppaths, force) # vec2list
 pbg = try(reticulate::import("torchbiggraph"))
+palib = reticulate::import("pathlib")
+txtpl = reticulate::r_to_py(lapply(fbpaths, function(x) palib$Path(x)))
 if (!inherits(pbg, "try-error")) {
   confdict = make_pbg_config(entity_path = dirname(fbpl[[1]]),
-                               edge_paths=fbpl)
-  pbg$converters$importers$convert_input_data( pbg$config$EntitySchema(num_partitions=1L),
-      confdict$relations,
-      confdict$entity_path, confdict$edge_paths,
+                               edge_paths=txtpl)
+  pbg$converters$importers$convert_input_data( reticulate::dict(all=pbg$config$EntitySchema(num_partitions=1L)),
+      list(confdict$relations),
+      palib$Path(confdict$entity_path), confdict$edge_paths,
       pppl, # input edge paths
-      pbg$converters$importers$TSVEdgeListReader(lhs_col=0L, rhs_col=2L, rel_col=1L),
+      pbg$converters$importers$TSVEdgelistReader(lhs_col=0L, rhs_col=2L, rel_col=1L),
       dynamic_relations = confdict$dynamic_relations)
 }
 }
