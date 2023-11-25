@@ -54,7 +54,7 @@ setup_config_schema(
 )
 }
 \arguments{
-\item{pbgref}{instance of torchbiggraph modules}
+\item{pbgref}{instance of torchbiggraph module}
 
 \item{entities}{EntitySchema instance}
 
@@ -65,7 +65,7 @@ make ConfigSchema
 }
 \examples{
 pbgref = reticulate::import("torchbiggraph")
-ent = pbgref$config$EntitySchema(num_partitions=1L)
+ent = make_entity_schema(pbgref=pbgref)
 entities=reticulate::dict(all=ent)
 rs = BiocPBG::make_rel_schema(pbgref=pbgref)
 cs = setup_config_schema( pbgref = pbgref, entities = entities,

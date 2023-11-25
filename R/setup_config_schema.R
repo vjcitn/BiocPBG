@@ -1,10 +1,24 @@
+#' produce EntitySchema
+#' @param num_partitions integer(1)
+#' @param featurized logical(1)
+#' @param dimension NULL Or integer(1)
+#' @param pbgref instance of torchbiggraph module
+#' @examples
+#' pbg = reticulate::import("torchbiggraph")
+#' EntitySchema(pbgref = pbg)
+#' @export
+make_entity_schema = function(num_partitions = 1L,
+  featurized=FALSE, dimension=NULL, pbgref)
+ pbgref$config$EntitySchema(num_partitions = num_partitions,
+   featurized=featurized, dimension=dimension)
+
 #' make ConfigSchema
-#' @param pbgref instance of torchbiggraph modules
+#' @param pbgref instance of torchbiggraph module
 #' @param entities EntitySchema instance
 #' @param relations list of RelationSchema instances
 #' @examples
 #' pbgref = reticulate::import("torchbiggraph")
-#' ent = pbgref$config$EntitySchema(num_partitions=1L)
+#' ent = make_entity_schema(pbgref=pbgref)
 #' entities=reticulate::dict(all=ent)
 #' rs = BiocPBG::make_rel_schema(pbgref=pbgref)
 #' cs = setup_config_schema( pbgref = pbgref, entities = entities,

@@ -2,50 +2,49 @@
 % Please edit documentation in R/edges_to_hdf5.R
 \name{triples_to_hdf5}
 \alias{triples_to_hdf5}
-\title{produce HDF5 files for edges defined in tsv files of triples (left, rel, right)}
+\title{use config object}
 \usage{
 triples_to_hdf5(
-  triple_paths,
-  num_partitions = 1L,
-  relname = "all_edges",
-  lhs = "all",
-  rhs = "all",
-  weight = 1,
-  operator = "complex_diagonal",
-  all_negs = FALSE,
+  config,
+  trvate_triple_paths,
+  dynamic_relations = FALSE,
+  lhs_col = 0L,
+  rhs_col = 2L,
+  rel_col = 1L,
   pbgref,
-  pathlibref
+  paref
 )
 }
 \arguments{
-\item{triple_paths}{character(3) with test, train, valid edge sets in order}
+\item{config}{ConfigSchema instance from `setup_config_schema`}
 
-\item{num_partitions}{integer(1)}
+\item{trvate_triple_paths}{character(3) paths to train, validation, test triple files}
 
-\item{relname}{character(1), passed to make_rel_schema}
+\item{lhs_col}{integer(1) position of lhs in triple tsv file}
 
-\item{lhs}{character(1), passed to make_rel_schema}
+\item{rhs_col}{integer(1) position of rhs in triple tsv file}
 
-\item{rhs}{character(1), passed to make_rel_schema}
-
-\item{weight}{numeric(1), passed to make_rel_schema}
-
-\item{operator}{character(1), passed to make_rel_schema}
-
-\item{all_negs}{character(1), passed to make_rel_schema}
+\item{rel_col}{integer(1) position of relation in triple tsv file}
 
 \item{pbgref}{python reference to torchbiggraph module}
 
-\item{pathlibref}{python reference to pathlib module}
+\item{paref}{python reference to pathlib module}
+
+\item{dynamic_relation}{logical(1)}
 }
 \description{
-produce HDF5 files for edges defined in tsv files of triples (left, rel, right)
+use config object
 }
 \examples{
 tfis = fb15k_folder()
+edp = gsub(".txt$", "partitioned", tfis)
 pbg = reticulate::import("torchbiggraph")
 palib = reticulate::import("pathlib")
-nn = triples_to_hdf5(tfis, pbgref = pbg, pathlibref=palib)
-nn
-rhdf5::h5ls(dir(nn$edge_paths[[1]], full=TRUE))
+ent = make_entity_schema(pbgref=pbg)
+entities=reticulate::dict(all=ent)
+rs = BiocPBG::make_rel_schema(pbgref=pbg)
+cs = setup_config_schema( pbgref = pbg, entities = entities,
+   relations = list(rs), entity_path = paste0(tempdir(), "/uconf"), edge_paths = edp,
+   checkpoint_path = paste0(tempdir(), "/uconf/chk"))
+tt = triples_to_hdf5( cs, tfis, pbgref = pbg, paref = palib )
 }
