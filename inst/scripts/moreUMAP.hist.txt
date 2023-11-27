@@ -1,0 +1,50 @@
+source("newdisc.R", echo=TRUE)
+fix(train_eval)
+cc
+train_eval(cc, pbg)
+train_eval(list(config=cc), pbg)
+
+source("newdisc.R", echo=TRUE)
+debug(triples_to_hdf5)
+source("newdisc.R", echo=TRUE)
+cc
+pyatt
+pyatt = import("attr")
+cc = pyatt$evolve(cc, num_epochs=35L)
+train_eval(list(config=cc), pbg)
+library(rhdf5)
+dim(cemb)
+cemb = h5read("cp3/embeddings_C_0.v35.h5", "embeddings")
+dim(cemb)
+library(uwot)
+BiocManager::install("uwot")
+library(uwot)
+um=umap(t(cemb))
+save(um, file="um.rda")
+savehistory(file="do35.hist.txt")
+um[1:4,]
+dir(cp3)
+dir("cp3")
+cc
+dir(tempdir())
+library(jsonlite)
+nn = fromJSON("entity_names_C_0.json")
+class(nn)
+nn[1:4]
+t3k
+ls()
+library(SingleCellExperiment)
+load("../../data/t3k.rda")
+t3k
+head(nn)
+all.equal(nn, t3k$Barcode)
+ty = t3k$celltype3
+names(ty) = t3k$Barcode
+reoty = ty[nn]
+load("um.rda")
+rownames(um) = nn
+umdf = data.frame(um)
+umdf$type = reoty
+head(umdf)
+save(umdf, file="umdf.rda")
+savehistory(file="moreUMAP.hist.txt")

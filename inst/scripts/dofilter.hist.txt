@@ -1,0 +1,67 @@
+library(BiocPBG)
+library(SingleCellExperiment)
+BiocManager::install("SingleCellExperiment")
+make_trvate
+disc_matrix
+dir()
+load("../../data/t3knr.rda")
+t3knr
+assays(t3knr)$disc = disc_matrix(assay(t3knr)$logcounts)
+class(assays(t3knr)$logcounts)
+BiocManager::install("HDF5Array")
+class(assays(t3knr)$logcounts)
+assays(t3knr)$disc = disc_matrix(assay(t3knr)$logcounts)
+assays(t3knr)$disc = disc_matrix(assays(t3knr)$logcounts)
+make_triples
+allt = make_triples(t3knr, "t3k.tsv")
+trdf = read.delim("t3k.tsv", h=FALSE, sep="\t")
+dim(trdf)
+make_trvate
+set.seed(1234);
+savehistory(file="pretrv.hist.txt")
+mm = make_trvate(trdf)
+sapply(mm,dim)
+write.table(mm$tr, "tr.tsv", sep="\t", col.names=FALSE, row.names=FALSE, quote=FALSE)
+write.table(mm$te, "te.tsv", sep="\t", col.names=FALSE, row.names=FALSE, quote=FALSE)
+write.table(mm$va, "va.tsv", sep="\t", col.names=FALSE, row.names=FALSE, quote=FALSE)
+savehistory(file="dowrites.hist.txt")
+source("trydisc.R", echo=TRUE)
+cc
+library(reticulate)
+pyatt = import("attr")
+cc2 = pyatt$evolve(cc, num_gpus=1L)
+train_eval
+train_eval(list(config=cc2), pbg)
+system("reset")
+ls()
+t3nkr
+t3knr
+library(scran)
+BiocManager::install("scran")
+library(scran)
+ls()
+?getTopHVGs
+stats = modelGeneVar(t3knr)
+?modelGeneVar
+stats = modelGeneVar(assays(t3knr, "logcounts"))
+stats = modelGeneVar(assays(t3knr, "logcounts", withDimnames=TRUE))
+example(modelGeneVar)
+sce
+stats = modelGeneVar(assays(t3knr, "logcounts", withDimnames=TRUE))
+class(assays(t3knr, "logcounts", withDimnames=TRUE))
+library(HDF5Array)
+options(error=recover)
+class(assays(t3knr, "logcounts", withDimnames=TRUE))
+class(assays(t3knr, "logcounts", withDimnames=FALSE))
+class(assay(t3knr, "logcounts", withDimnames=FALSE))
+stats = modelGeneVar(assay(t3knr, "logcounts"))
+class(assay(t3knr, "logcounts", withDimnames=FALSE))
+stats = modelGeneVar(assay(t3knr, "logcounts", withDimnames=FALSE))
+dim(stats)
+head(stats)
+?modelGeneVar
+args(getTopHVGs)
+tt = getTopHVGs(stats, n=2000)
+class(tt)
+tt[1:5]
+savehistory(file="dofilter.hist.txt")

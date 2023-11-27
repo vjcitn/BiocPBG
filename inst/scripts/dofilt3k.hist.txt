@@ -1,0 +1,25 @@
+library(TENxPBMCData)
+BiocManager::install("TENxPBMCData")
+library(TENxPBMCData)
+args(TENxPBMCData)
+t3k = TENxPBMCData("pbmc3k", as.sparse=FALSE)
+t3k
+class(assay(t3k))
+assay(t3k) = as.matrix(assay(t3k))
+class(assay(t3k))
+library(scran)
+args(logNormCounts)
+t3k = logNormCounts(t3k)
+t3k
+class(assay(t3k, "logcounts"))
+savehistory(file="get3kA.hist.txt")
+args(getTopHVGs)
+search()
+ls(2)
+?getTopHVGs
+stats = modelGeneVar(t3k)
+top = getTopHVGs(t3k, n=5000)
+top
+t3k = t3k[top,]
+t3k
+savehistory(file="dofilt3k.hist.txt")

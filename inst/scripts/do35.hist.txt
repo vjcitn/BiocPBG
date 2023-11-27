@@ -1,0 +1,24 @@
+source("newdisc.R", echo=TRUE)
+fix(train_eval)
+cc
+train_eval(cc, pbg)
+train_eval(list(config=cc), pbg)
+
+source("newdisc.R", echo=TRUE)
+debug(triples_to_hdf5)
+source("newdisc.R", echo=TRUE)
+cc
+pyatt
+pyatt = import("attr")
+cc = pyatt$evolve(cc, num_epochs=35L)
+train_eval(list(config=cc), pbg)
+library(rhdf5)
+dim(cemb)
+cemb = h5read("cp3/embeddings_C_0.v35.h5", "embeddings")
+dim(cemb)
+library(uwot)
+BiocManager::install("uwot")
+library(uwot)
+um=umap(t(cemb))
+save(um, file="um.rda")
+savehistory(file="do35.hist.txt")

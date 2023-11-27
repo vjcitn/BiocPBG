@@ -1,0 +1,21 @@
+library(BiocPBG)
+library(SingleCellExperiment)
+BiocManager::install("SingleCellExperiment")
+make_trvate
+disc_matrix
+dir()
+load("../../data/t3knr.rda")
+t3knr
+assays(t3knr)$disc = disc_matrix(assay(t3knr)$logcounts)
+class(assays(t3knr)$logcounts)
+BiocManager::install("HDF5Array")
+class(assays(t3knr)$logcounts)
+assays(t3knr)$disc = disc_matrix(assay(t3knr)$logcounts)
+assays(t3knr)$disc = disc_matrix(assays(t3knr)$logcounts)
+make_triples
+allt = make_triples(t3knr, "t3k.tsv")
+trdf = read.delim("t3k.tsv", h=FALSE, sep="\t")
+dim(trdf)
+make_trvate
+set.seed(1234);
+savehistory(file="pretrv.hist.txt")
