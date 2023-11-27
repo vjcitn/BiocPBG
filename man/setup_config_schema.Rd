@@ -30,7 +30,7 @@ setup_config_schema(
   workers = NULL,
   batch_size = 1000L,
   num_batch_negs = 50L,
-  num_uniform_negs = 1000,
+  num_uniform_negs = 1000L,
   disable_lhs_negs = FALSE,
   disable_rhs_negs = FALSE,
   lr = 0.1,

@@ -1,16 +1,3 @@
-#' produce EntitySchema
-#' @param num_partitions integer(1)
-#' @param featurized logical(1)
-#' @param dimension NULL Or integer(1)
-#' @param pbgref instance of torchbiggraph module
-#' @examples
-#' pbg = reticulate::import("torchbiggraph")
-#' EntitySchema(pbgref = pbg)
-#' @export
-make_entity_schema = function(num_partitions = 1L,
-  featurized=FALSE, dimension=NULL, pbgref)
- pbgref$config$EntitySchema(num_partitions = num_partitions,
-   featurized=featurized, dimension=dimension)
 
 #' make ConfigSchema
 #' @param pbgref instance of torchbiggraph module
@@ -126,3 +113,24 @@ setup_config_schema = function( pbgref, entities, relations, entity_path,
 # partition_shard_size: int = 250,
 # half_precision: bool = False) -> None
 #
+
+#ConfigSchema(entities={'C': EntitySchema(num_partitions=1, featurized=False, dimension=None), 'G': EntitySchema(num_partitions=1, featurized=False, dimension=None)}, relations=[RelationSchema(name='r0', lhs='C', rhs='G', weight=1.0, operator='none', all_negs=False), RelationSchema(name='r1', lhs='C', rhs='G', weight=2.0, operator='none', all_negs=False), RelationSchema(name='r2', lhs='C', rhs='G', weight=3.0, operator='none', all_negs=False), RelationSchema(name='r3', lhs='C', rhs='G', weight=4.0, operator='none', all_negs=False), RelationSchema(name='r4', lhs='C', rhs='G', weight=5.0, operator='none', all_negs=False)], dimension=50, init_scale=0.001, max_norm=None, global_emb=False, comparator='dot', bias=False, loss_fn='softmax', margin=0.1, regularization_coef=0.0, regularizer='N3', wd=0.015495, wd_interval=10, entity_path='result_simba_rnaseq/pbg/graph0/input/entity', edge_paths=['result_simba_rnaseq/pbg/graph0/input/edge'], checkpoint_path='result_simba_rnaseq/pbg/graph0/model', init_path=None, checkpoint_preservation_interval=None, num_epochs=10, num_edge_chunks=None, max_edges_per_chunk=1000000000, bucket_order=<BucketOrder.INSIDE_OUT: 'inside_out'>, workers=12, batch_size=1000, num_batch_negs=50, num_uniform_negs=50, disable_lhs_negs=False, disable_rhs_negs=False, lr=0.1, relation_lr=None, eval_fraction=0.05, eval_num_batch_negs=50, eval_num_uniform_negs=50, early_stopping=False, background_io=False, verbose=0, hogwild_delay=2, dynamic_relations=False, num_machines=1, num_partition_servers=-1, distributed_init_method=None, distributed_tree_init_order=True, num_gpus=0, num_groups_for_partition_server=16, half_precision=False)
+
+library(BiocPBG)
+pbg = import("torchbiggraph")
+
+entC = make_entity_schema(pbgref = pbg)
+entG = make_entity_schema(pbgref = pbg)
+ents = list(C = entC, G = entG)
+
+rels = paste0("r", 0:4)
+wts = 1.0+(0:4)
+rels = lapply(1:5, function(x) make_rel_schema(name = rels[x], lhs='C', rhs='G',
+   weight = wts[x], operator='none', all_negs = NULL, pbgref = pbg))
+
+rel0 = make_rel_schema(name = 'r0', lhs='C', rhs='G', weight=1.0, operator='none',
+   all_negs = NULL, pbgref = pbg)
+
+cc = setup_config_schema(pbgref = pbg, entities = ents, relations = rels,
+  entity_path = tempdir(), edge_paths = c("tr", "va", "te"), checkpoint_path = "cp",
+  dimension = 50L, dynamic_relations = FALSE )
