@@ -2,9 +2,9 @@
 % Please edit documentation in R/train_eval.R
 \name{train_eval}
 \alias{train_eval}
-\title{run training and evaluation}
+\title{run training and (optionally) evaluation}
 \usage{
-train_eval(tripout, pbg, evind = 3)
+train_eval(tripout, pbg, evind = 3, do_eval = FALSE)
 }
 \arguments{
 \item{tripout}{list resulting from `triples_to_hdf5`}
@@ -12,9 +12,11 @@ train_eval(tripout, pbg, evind = 3)
 \item{pbg}{torchbiggraph reference}
 
 \item{evind}{numeric(1) index in edge_paths to use for evaluation}
+
+\item{do_eval}{logical(1) if TRUE an evaluation is performed}
 }
 \description{
-run training and evaluation
+run training and (optionally) evaluation
 }
 \note{
 when a full set of train/validate/test paths are provided,
@@ -26,5 +28,5 @@ pyatt = import("attr")
 tt2 = list()
 tt2$config = pyatt$evolve(tt$config, num_epochs=4L, num_uniform_negs=1000L,
    num_gpus=1L)
-train_eval(tt2, pbg)
+train_eval(tt2, pbg, do_eval=TRUE)
 }
