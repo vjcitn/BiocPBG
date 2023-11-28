@@ -2,6 +2,9 @@
 #' run training and evaluation
 #' @param tripout list resulting from `triples_to_hdf5`
 #' @param pbg torchbiggraph reference
+#' @param evind numeric(1) index in edge_paths to use for evaluation
+#' @note when a full set of train/validate/test paths are provided,
+#' then evind should be set to 3
 #' @examples
 #' example(triples_to_hdf5)  # creates tt with tt$config
 #' pyatt = import("attr")
@@ -10,7 +13,7 @@
 #'    num_gpus=1L)
 #' train_eval(tt2, pbg)
 #' @export
-train_eval = function(tripout, pbg) {
+train_eval = function(tripout, pbg, evind=3) {
   ut = pbg$util
   ut$setup_logging()
   si = ut$SubprocessInitializer()
@@ -32,7 +35,7 @@ train_eval = function(tripout, pbg) {
   pbg$train$train(trc, subprocess_init=si)
   
   nr = lapply( trc$relations, function(x) pyatt$evolve(x, all_negs=TRUE))
-  trc2 = pyatt$evolve(trc, edge_paths = list(tripout$config$edge_paths[[3]]),
+  trc2 = pyatt$evolve(trc, edge_paths = list(tripout$config$edge_paths[[evind]]),
       relations=nr, num_uniform_negs = 0L)
   pbg$eval$do_eval(trc2, subprocess_init = si)
 }

@@ -4,15 +4,21 @@
 \alias{train_eval}
 \title{run training and evaluation}
 \usage{
-train_eval(tripout, pbg)
+train_eval(tripout, pbg, evind = 3)
 }
 \arguments{
 \item{tripout}{list resulting from `triples_to_hdf5`}
 
 \item{pbg}{torchbiggraph reference}
+
+\item{evind}{numeric(1) index in edge_paths to use for evaluation}
 }
 \description{
 run training and evaluation
+}
+\note{
+when a full set of train/validate/test paths are provided,
+then evind should be set to 3
 }
 \examples{
 example(triples_to_hdf5)  # creates tt with tt$config
