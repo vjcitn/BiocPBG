@@ -1,7 +1,7 @@
 Package: BiocPBG
 Date: 2022-11-25
 Title: interface to torchbiggraph
-Version: 0.0.6
+Version: 0.0.7
 Authors@R: 
     c(person(
         "Vincent", "Carey", role = c("aut", "cre"),
@@ -12,9 +12,9 @@ Authors@R:
 Description: interface to torchbiggraph
 License: Artistic-2.0
 Encoding: UTF-8
-Depends: R (>= 4.1), reticulate, rhdf5
+Depends: R (>= 4.1), reticulate, rhdf5, SingleCellExperiment
 Suggests: knitr, testthat, BiocStyle
-Imports: BiocFileCache, SingleCellExperiment, scran
+Imports: BiocFileCache, scran
 VignetteBuilder: knitr
 biocViews: Infrastructure
 RoxygenNote: 7.2.3
