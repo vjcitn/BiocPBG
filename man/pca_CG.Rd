@@ -31,5 +31,5 @@ embeddings produced with PyTorch-BigGraph
 data(nn50)
 data(t3k)
 twp = pca_CG(nn50, t3k)
-pairs(reducedDim(twp)$PCA, pch=19, col=factor(twp$celltype3))
+pairs(reducedDim(twp, "PCA"), pch=19, col=factor(twp$celltype3))
 }

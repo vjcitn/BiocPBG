@@ -41,7 +41,7 @@ umap_CG = function(trout, sce, ncomp=3, ...) {
 #' data(nn50)
 #' data(t3k)
 #' twp = pca_CG(nn50, t3k)
-#' pairs(reducedDim(twp)$PCA, pch=19, col=factor(twp$celltype3))
+#' pairs(reducedDim(twp, "PCA"), pch=19, col=factor(twp$celltype3))
 #' @export
 pca_CG = function(trout, sce, ncomp=3, ...) {
   pca_c = irlba::prcomp_irlba(t(trout$cemb), n=ncomp, ...)$x
