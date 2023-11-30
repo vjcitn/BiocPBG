@@ -26,7 +26,10 @@ then evind should be set to 3
 example(triples_to_hdf5)  # creates tt with tt$config
 pyatt = import("attr")
 tt2 = list()
+tor = reticulate::import("torch")
+ngpu = 0L
+if (tor$cuda$is_available()) ngpu=1L
 tt2$config = pyatt$evolve(tt$config, num_epochs=4L, num_uniform_negs=1000L,
-   num_gpus=1L)
+   num_gpus=ngpu)
 train_eval(tt2, pbg, do_eval=TRUE)
 }
