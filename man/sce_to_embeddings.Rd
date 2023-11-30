@@ -46,7 +46,7 @@ palib = reticulate::import("pathlib")
 data(t3k)
 testd = paste0(tempdir(), "/testse")
 dir.create(testd)
-nn2 = sce_to_embeddings(t3k, testd, N_EPOCHS=2L, BATCH_SIZE=100000L,
+nn2 = sce_to_embeddings(t3k, testd, N_EPOCHS=2L, BATCH_SIZE=1000L,
    N_GENES=500L, N_GPUS=0L, pbg=pbg, palib=palib)
 dir(testd, full.names=TRUE)
 }
