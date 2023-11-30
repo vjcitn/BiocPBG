@@ -17,8 +17,11 @@
 #' pbg = reticulate::import("torchbiggraph")
 #' palib = reticulate::import("pathlib")
 #' data(t3k)
-#' nn2 = sce_to_embeddings(t3k, "myfold50", N_EPOCHS=2L, BATCH_SIZE=100000L,
+#' td = tempdir()
+#' testd = dir.create(paste0(td, "/testse"))
+#' nn2 = sce_to_embeddings(t3k, testd, N_EPOCHS=2L, BATCH_SIZE=100000L,
 #'    N_GENES=500L, N_GPUS=0L, pbg=pbg, palib=palib)
+#' dir(testd, full.names=TRUE)
 #' @export
 sce_to_embeddings = function(sce, workdir, N_EPOCHS, N_GENES, N_GPUS=1L, 
    BATCH_SIZE=100000L, pbg, palib) {

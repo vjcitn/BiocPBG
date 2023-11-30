@@ -44,6 +44,9 @@ RNA-seq measures in a SingleCellExperiment
 pbg = reticulate::import("torchbiggraph")
 palib = reticulate::import("pathlib")
 data(t3k)
-nn2 = sce_to_embeddings(t3k, "myfold50", N_EPOCHS=2L, BATCH_SIZE=100000L,
+td = tempdir()
+testd = dir.create(paste0(td, "/testse"))
+nn2 = sce_to_embeddings(t3k, testd, N_EPOCHS=2L, BATCH_SIZE=100000L,
    N_GENES=500L, N_GPUS=0L, pbg=pbg, palib=palib)
+dir(testd, full.names=TRUE)
 }
