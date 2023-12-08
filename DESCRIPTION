@@ -12,7 +12,8 @@ Authors@R:
 Description: interface to torchbiggraph
 License: Artistic-2.0
 Encoding: UTF-8
-Depends: R (>= 4.1), reticulate, rhdf5, SingleCellExperiment
+Depends: R (>= 4.1), reticulate, rhdf5, SingleCellExperiment,
+	ggplot2
 Suggests: knitr, testthat, BiocStyle
 Imports: BiocFileCache, scran
 VignetteBuilder: knitr
