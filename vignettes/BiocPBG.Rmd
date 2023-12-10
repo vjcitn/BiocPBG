@@ -1,0 +1,53 @@
+---
+title: "BiocPBG: application of PyTorch biggraph in single cell multiomics"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{BiocPBG: application of PyTorch biggraph in single cell multiomics}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+
+# Introduction
+
+Inspired by the SIMBA algorithm of the Pinello lab ([paper](https://www.nature.com/articles/s41592-023-01899-8), [github](https://github.com/pinellolab/simba)),
+this package illustrates the use of embeddings
+produced with PyTorch-BigGraph
+([paper](https://mlsys.org/Conferences/2019/doc/2019/71.pdf),
+[github](https://github.com/facebookresearch/PyTorch-BigGraph))
+in the analysis of single-cell experiments.
+
+## Prerequisites
+
+### Python 3.10
+
+There is a bug in the base PyTorch-BigGraph distribution
+from facebook research.  A 'patched' version is available
+at `https://github.com/vjcitn/PyTorch-BigGraph`.  Clone
+that repo and use branch `vjc_idx_fix_gpu`.  The use
+`pip install -e .` in the repo root folder with the version
+of pip that installs to the locations employed by
+reticulate.  Set `RETICULATE_PYTHON` if necessary to
+ensure that the right version of python is used.
+
+### R 4.3+
+
+To use this package with R 4.3 or later, be sure that
+the R packages devtools, remotes, reticulate, and BiocManager
+are available.
+Then the package can be installed with
+```
+BiocManager::install("vjcitn/BiocPBG")
+```
+
+# RNA-seq example
+
+The SIMBA tutorials include a [jupyter notebook](https://simba-bio.readthedocs.io/en/latest/rna_10xpmbc_all_genes_v1.2.html)
+working through the embedding of RNA-seq 
+results on 2700 PBMCs.
