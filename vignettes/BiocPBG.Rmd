@@ -48,6 +48,48 @@ BiocManager::install("vjcitn/BiocPBG")
 
 # RNA-seq example
 
+## Building the embeddings
+
 The SIMBA tutorials include a [jupyter notebook](https://simba-bio.readthedocs.io/en/latest/rna_10xpmbc_all_genes_v1.2.html)
 working through the embedding of RNA-seq 
-results on 2700 PBMCs.
+results on 2700 PBMCs.  We used a GPU-enabled
+machine in the NSF ACCESS Jetstream2 system
+(allocation BIR190004) to create 50-dimensional
+embeddings of cells and genes with a
+[script](https://github.com/vjcitn/BiocPBG/blob/main/inst/scripts/sce_to_emb50.R).  The primary outcomes are in a stored R list called `nn50`.
+
+```{r lknn50, message=FALSE}
+library(BiocPBG)
+data(nn50)
+str(nn50)
+```
+The `config` element can be useful in interactive computing
+in a given R/reticulate session.  After serialization, the
+element is a null pointer.
+
+See the appendix for additional details on the formation
+of the input data, which involves discretization of
+normalized expression measures.
+
+## Informal assessment of cell embedding
+
+When the embedding outputs are reduced using UMAP with
+default settings, we have:
+
+```{r doum,message=FALSE}
+library(uwot)
+library(plotly)
+data(t3k)
+set.seed(1234) # reproducible umap
+cu = umap(t(nn50$cemb))
+cud = data.frame(um1=cu[,1], um2=cu[,2], barcode=nn50$cents)
+colnames(t3k) = t3k$Barcode # need to set barcode
+t3kb = t3k[, cud$barcode]   # reorder columns
+cud$celltype = t3kb$celltype2 #HPCA
+plot_ly(data=cud, x=~um1, y=~um2, color=~celltype, text=~celltype, alpha=.6)
+```
+
+The labeling here is based on the `HumanPrimaryCellAtlasData`
+element of [celldex](https://bioconductor.org/packages/celldex),
+applied using the [SingleR](https://bioconductor.org/packages/SingleR)
+method.
