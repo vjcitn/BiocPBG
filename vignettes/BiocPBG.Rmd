@@ -144,3 +144,23 @@ ggplot(alldf, aes(x=rank,xend=rank,y=0, yend=prob,colour=celltype)) +
     guides(colour = guide_legend(override.aes =
        list(linetype=1, lwd=2)))
 ```
+
+## Cell-type marker assessment via Gini index
+
+At this time our implementation of the 'max' metric
+is not faithful to the simba modules.  But the following code chunk comes
+close to producing Figure 2e of the SIMBA paper.
+
+```{r lkgin}
+# t3k = add_simba_scores(nn50, t3k) # already done
+gi = gini(t(assay(altExps(t3k)$sprobs)))
+ma = as.numeric(max_scores(t3k))
+mydf = data.frame(max=as.numeric(ma), gini=gi, gene=rowData(t3k)$Symbol)
+litd = mydf[order(mydf$gini,decreasing=TRUE),][1:25,]
+hh = mydf[mydf$gene=="GAPDH",] 
+litd = rbind(litd, hh)
+mm = ggplot(mydf, aes(x=max, y=gini, text=gene)) + geom_point() 
+mm + ggrepel::geom_text_repel(data=litd, 
+          aes(x=max, y=gini, label=gene), colour="purple")
+```
+
