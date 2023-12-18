@@ -2,7 +2,9 @@
 
 
 # this script works from make_triples output for discretized pbmc3k
-# used to revise nn50.rda on 2 Dec 2023 to deal with duplicated rownames
+# used to revise nn50.rda on 18 Dec 2023 
+# to deal with duplicated rownames and to 
+# introduce the training_stats data
 
 Sys.setenv("RETICULATE_PYTHON"="/usr/bin/python3.10")
 
