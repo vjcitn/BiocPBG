@@ -71,6 +71,13 @@ See the appendix for additional details on the formation
 of the input data, which involves discretization of
 normalized expression measures.
 
+## Loss function trace
+
+```{r lkloss}
+plot(y=nn50$stats$stats.metrics.loss, 
+  x=nn50$stats$epoch_idx, xlab="Epoch", ylab="Loss")
+```
+
 ## Informal assessment of cell embedding
 
 When the embedding outputs are reduced using UMAP with

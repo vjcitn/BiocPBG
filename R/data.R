@@ -1,7 +1,8 @@
 #' embeddings for PBMC3K based on 50 epochs of training by
-#' torch-biggraph for 2000 highly variable genes
+#' torch-biggraph for 4780 highly variable genes on 2700 cells.
 #' @docType data
 #' @format named list
+#' @note Built using sce_to_embeddings with t3k
 #' @examples
 #' data(nn50)
 #' names(nn50)

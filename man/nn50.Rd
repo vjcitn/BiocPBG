@@ -4,7 +4,7 @@
 \name{nn50}
 \alias{nn50}
 \title{embeddings for PBMC3K based on 50 epochs of training by
-torch-biggraph for 2000 highly variable genes}
+torch-biggraph for 4780 highly variable genes on 2700 cells.}
 \format{
 named list
 }
@@ -13,7 +13,10 @@ nn50
 }
 \description{
 embeddings for PBMC3K based on 50 epochs of training by
-torch-biggraph for 2000 highly variable genes
+torch-biggraph for 4780 highly variable genes on 2700 cells.
+}
+\note{
+Built using sce_to_embeddings with t3k
 }
 \examples{
 data(nn50)
