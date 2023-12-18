@@ -36,6 +36,16 @@ exist prior to call}
 
 \item{palib}{reference to pathlib}
 }
+\value{
+a list with elements `cemb` and `gemb` (matrix
+representations of embeddings of cells and genes respectively),
+`cents` and `gents` (vectors of names of cells and
+genes as ordered in the returned matrices),
+stats (a data.frame of training statistics),
+call (the match.call) and config (a python reference,
+not useful after the session in which object was
+produced ends).
+}
 \description{
 produce torchbiggraph embeddings for discretized single-cell
 RNA-seq measures in a SingleCellExperiment

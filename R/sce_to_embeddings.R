@@ -13,6 +13,14 @@
 #' @param BATCH_SIZE integer
 #' @param pbg reference to torchbiggraph
 #' @param palib reference to pathlib
+#' @return a list with elements `cemb` and `gemb` (matrix
+#' representations of embeddings of cells and genes respectively),
+#' `cents` and `gents` (vectors of names of cells and
+#' genes as ordered in the returned matrices),
+#' stats (a data.frame of training statistics),
+#' call (the match.call) and config (a python reference,
+#' not useful after the session in which object was
+#' produced ends).
 #' @examples
 #' pbg = reticulate::import("torchbiggraph")
 #' palib = reticulate::import("pathlib")
@@ -50,6 +58,8 @@ sce_to_embeddings = function(sce, workdir, N_EPOCHS, N_GENES, N_GPUS=1L,
 
    epath = sprintf("./ents%d", N_EPOCHS) 
    
+# FIXME should we be using workdir in the paths stated here
+#
    cc = setup_config_schema(pbgref = pbg, entities = ents, relations = rels,
      entity_path = epath, batch_size=BATCH_SIZE,
      edge_paths = list('tr'="tr"), checkpoint_path = sprintf("cp%d", N_EPOCHS),
@@ -66,8 +76,12 @@ sce_to_embeddings = function(sce, workdir, N_EPOCHS, N_GENES, N_GPUS=1L,
 
    cents = jsonlite::fromJSON(paste0(epath, "/", "entity_names_C_0.json"))
    gents = jsonlite::fromJSON(paste0(epath, "/", "entity_names_G_0.json"))
+   statstmp = readLines(sprintf("cp%d/training_stats.json", N_EPOCHS))
+   statsa = lapply(statstmp, jsonlite::fromJSON)
+   stats = do.call( rbind, lapply(statsa, data.frame))
 
   mc = match.call()
-  list(cemb=cemb, gemb=gemb, cents=cents, gents=gents, call=mc, config=cc)
+  list(cemb=cemb, gemb=gemb, cents=cents, gents=gents, 
+        stats=stats, call=mc, config=cc)
 }
 
